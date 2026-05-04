@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cart - JewelleryHub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow py-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-warning" href="index.html" style="font-size: 1.8rem;">
+     JewelleryHub
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="neckless.html">Necklaces</a></li>
+        <li class="nav-item"><a class="nav-link" href="ear-ring.html">Earrings</a></li>
+        <li class="nav-item"><a class="nav-link" href="ring.html">Rings</a></li>
+        <li class="nav-item"><a class="nav-link active" href="cart.html">Cart</a></li>
+        <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart Section -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Your Shopping Cart</h2>
+
+  <div id="cart-items" class="mb-5"></div>
+
+  <div class="text-center">
+    <p class="total-price">Total Price: Rs. <span id="total-price">0</span></p>
+  <button onclick="proceedToCheckout()" class="btn btn-warning">Proceed to Checkout</button>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-4">
+  <div class="container">
+    <p class="mb-1">© 2025 JewelleryHub. All rights reserved.</p>
+    <p class="mb-0">Designed by JewelleryHub Team</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Cart Logic -->
+<script>
+  // 🔐 Check if user is logged in BEFORE cart even loads
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!user || !user.email) {
+    alert("⚠️ You must login before accessing your cart.");
+    localStorage.setItem("redirectAfterLogin", "cart.html");
+    window.location.href = "login.html";
+  }
+
+  // 🛒 Display Cart
+  function displayCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartItemsDiv = document.getElementById('cart-items');
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = "<p class='text-center text-muted'>Your cart is empty.</p>";
+      document.getElementById('total-price').innerText = '0';
+      return;
+    }
+
+    let html = '<div class="table-responsive"><table class="table table-bordered text-center">';
+    html += '<thead><tr><th>Product</th><th>Price (Rs.)</th><th>Actions</th></tr></thead><tbody>';
+    cart.forEach((item, index) => {
+      html += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.price}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" onclick="deleteItem(${index})">Delete</button>
+          </td>
+        </tr>`;
+      total += item.price;
+    });
+    html += '</tbody></table></div>';
+
+    cartItemsDiv.innerHTML = html;
+    document.getElementById('total-price').innerText = total;
+  }
+
+  function deleteItem(index) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayCart();
+  }
+
+  displayCart();
+
+  // 🔁 Checkout button handler
+  function proceedToCheckout() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (!user || !user.email) {
+      alert("⚠️ Please login before checking out!");
+      localStorage.setItem("redirectAfterLogin", "cart.html");
+      window.location.href = "login.html";
+    } else {
+      window.location.href = "checkout.html";
+    }
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

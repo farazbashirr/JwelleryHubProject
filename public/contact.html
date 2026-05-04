@@ -1,0 +1,109 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact Us - JewelleryHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark py-3 shadow" style="background-color: #0a0a0a;">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-warning" href="index.html" style="font-size: 1.8rem;">
+          <i class="bi bi-gem"></i> JewelleryHub
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link px-3" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="categories.html">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3 active" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="register.html">Register</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Contact Form Section -->
+    <div class="container py-5">
+    <h1 class="text-center contact-title mb-4"> <b>Contact Us</b></h1>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form id="contactForm">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" id="name" class="form-control" placeholder="Your name" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" id="email" class="form-control" placeholder="your@email.com" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea id="message" class="form-control" rows="5" placeholder="Your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning w-100" id="submitBtn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-black text-white text-center py-3">
+      <p class="mb-0">© 2025 JewelleryHub. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Contact Form Logic -->
+    <script>
+      document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        try {
+          const res = await fetch('http://localhost:3000/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            alert('✅ ' + (data.message || 'Message sent successfully!'));
+            document.getElementById('contactForm').reset();
+          } else {
+            alert('❌ ' + (data.message || 'Failed to send message. Please try again.'));
+          }
+        } catch (err) {
+          console.error('Contact form error:', err);
+          alert('❌ Something went wrong. Please try again later.');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+  </html>

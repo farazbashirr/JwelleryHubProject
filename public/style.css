@@ -1,0 +1,235 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #111;
+    color: #fff;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #000 !important;
+  }
+  
+  .navbar-brand, .nav-link {
+    color: #f5f5f5 !important;
+  }
+  
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+  }
+  
+  .nav-link.active {
+    font-weight: bold;
+    color: #d4af37 !important; /* Gold */
+  }
+  
+  /* Hero Section */
+  header.hero {
+    background: url('2087678.jpg') no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+  }
+  
+  header.hero h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #d4af37; /* Gold */
+  }
+  
+  header.hero p {
+    font-size: 1.25rem;
+    color: #eee;
+  }
+  
+  /* Headings */
+  h2, h1.category-title {
+    color: #d4af37;
+    font-weight: 600;
+  }
+  
+  
+  /* Cards */
+  .card {
+    background-color: #1c1c1c;
+    border: none;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-title {
+    color: #d4af37;
+  }
+  
+  .card-text {
+    color: #ccc;
+  }
+  
+  /* Buttons */
+  .btn-warning {
+    background-color: #d4af37;
+    border: none;
+    color: #000;
+  }
+  
+  .btn-warning:hover {
+    background-color: #c29e2c;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background-color: #b52b38;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #000;
+    color: #aaa;
+  }
+  
+  /* Forms */
+  input.form-control {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #444;
+  }
+  
+  input.form-control::placeholder {
+    color: #aaa;
+  }
+  
+  .form-control:focus {
+    border-color: #d4af37;
+    box-shadow: none;
+  }
+  
+  /* Category Cards */
+  .card.category-card {
+    background-color: #1c1c1c;
+    border: none;
+    transition: transform 0.3s ease;
+  }
+  
+  .card.category-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  /* Login Form */
+  .login-box {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(240, 192, 64, 0.2);
+  }
+  
+  .login-title {
+    color: #f0c040;
+  }
+  
+  /* Contact Section */
+  .contact-title {
+    color: #f0c040;
+  }
+  
+  /* Earring Item */
+  .earring-item {
+    border-radius: 15px;
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .earring-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .btn-cart {
+    width: 100%;
+    padding: 12px;
+    background-color: #d4af37;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    text-transform: uppercase;
+  }
+  
+  .btn-cart:hover {
+    background-color: #c3972b;
+  }
+  
+  /* Confirmation Card */
+  .confirmation-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation-card h4 {
+    color: #28a745;
+  }
+  
+  /* General Card Styles */
+  .card img {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    background-color: #222;
+    border-radius: 0 0 15px 15px;
+    padding: 20px;
+  }
+  
+  /* Price */
+  .price {
+    font-size: 1.2rem;
+    color: #f0c040;
+  }
+  
+  /* Customization for various sections */
+  footer {
+    background-color: #0a0a0a;
+  }
+  
+  h2 {
+    font-weight: 600;
+    color: #f0c040;
+  }
+  
+  .card-title {
+    color: #f0c040;
+  }
+  
+  .card-body {
+    background-color: #222;
+  }
+  
+  

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Confirmation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #111;
+      color: #f8f9fa;
+    }
+
+    .navbar {
+      background-color: #000;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.8rem;
+      color: white !important;
+    }
+
+    .navbar-nav .nav-link {
+      color: #ddd !important;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: gold !important;
+    }
+
+    .confirmation-card {
+      background-color: #1c1c1c;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      color: white;
+    }
+
+    .confirmation-card h4,
+    .confirmation-card h5 {
+      color: gold;
+    }
+
+    .btn-primary {
+      background-color: gold;
+      color: black;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #e6c200;
+    }
+
+    .footer {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    hr {
+      border-color: rgba(255, 215, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">JewelleryHub</a>
+    <div class="navbar-collapse collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Order Confirmation Section -->
+<div class="container my-5">
+  <div class="confirmation-card">
+    <h4 class="mb-3">🎉 Order Confirmed!</h4>
+    <p>Thank you for shopping with <strong>JewelleryHub</strong>! Your order has been successfully placed.</p>
+
+    <div id="order-summary"></div>
+
+    <h5>Total Amount: <strong>Rs. <span id="total-amount">0</span></strong></h5>
+
+    <p class="mt-3">We will send you an email confirmation with the order details shortly. If you have any questions, feel free to contact us.</p>
+
+    <a href="index.html" class="btn btn-primary mt-3">Back to Home</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>© 2025 JewelleryHub. All rights reserved.</p>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.onload = function () {
+    const orderData = JSON.parse(localStorage.getItem("order")) || {};
+    const items = orderData.items || [];
+    const customer = orderData.customer || {};
+    const summaryDiv = document.getElementById("order-summary");
+    const totalSpan = document.getElementById("total-amount");
+    let total = 0;
+
+    if (items.length === 0) {
+      summaryDiv.innerHTML = "<li>No items found in your order.</li>";
+      totalSpan.innerText = "0";
+      return;
+    }
+
+    let html = `
+      <h5 class="mt-4">👤 Customer Details</h5>
+      <ul class="list-unstyled mb-4">
+        <li><strong>Name:</strong> ${customer.name || 'N/A'}</li>
+        <li><strong>Email:</strong> ${customer.email || 'N/A'}</li>
+        <li><strong>Phone:</strong> ${customer.phone || 'N/A'}</li>
+        <li><strong>Address:</strong> ${customer.address || 'N/A'}</li>
+      </ul>
+
+      <h5 class="mt-4">🛍️ Ordered Items</h5>
+      <ul class="list-unstyled mb-3">
+    `;
+
+    items.forEach(item => {
+      html += `
+        <li><strong>Product:</strong> ${item.name}</li>
+        <li><strong>Price:</strong> Rs. ${item.price}</li>
+        <li><strong>Quantity:</strong> 1</li>
+        <hr />
+      `;
+      total += item.price;
+    });
+
+    html += '</ul>';
+    summaryDiv.innerHTML = html;
+    totalSpan.innerText = total;
+
+    localStorage.removeItem("order"); // Clear order after showing
+  };
+</script>
+
+</body>
+</html>

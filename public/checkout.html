@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - JewelleryHub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow py-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-warning" href="index.html" style="font-size: 1.8rem;">JewelleryHub</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="neckless.html">Necklaces</a></li>
+        <li class="nav-item"><a class="nav-link" href="ear-ring.html">Earrings</a></li>
+        <li class="nav-item"><a class="nav-link" href="ring.html">Rings</a></li>
+        <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
+        <li class="nav-item"><a class="nav-link active" href="checkout.html">Checkout</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Checkout Form -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Checkout</h2>
+  <form class="row g-4" id="checkoutForm">
+    <div class="col-md-6">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" placeholder="Enter your name" required>
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email Address</label>
+      <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+    </div>
+    <div class="col-md-6">
+      <label for="phone" class="form-label">Phone Number</label>
+      <input type="text" class="form-control" id="phone" placeholder="03xx-xxxxxxx" required pattern="\d{11}" maxlength="11" title="Phone number must be exactly 11 digits" required>
+    </div>
+    <div class="col-md-6">
+      <label for="address" class="form-label">Shipping Address</label>
+      <input type="text" class="form-control" id="address" placeholder="Street, City, ZIP" required>
+    </div>
+    <div class="col-12">
+      <label for="notes" class="form-label">Order Notes (Optional)</label>
+      <textarea class="form-control" id="notes" rows="3" placeholder="Any specific instructions?"></textarea>
+    </div>
+    <div class="col-12 text-center">
+      <button type="submit" class="btn btn-warning px-5 py-2 mt-3">Place Order</button>
+    </div>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-4">
+  <div class="container">
+    <p class="mb-1">© 2025 JewelleryHub. All rights reserved.</p>
+    <p class="mb-0">Thank you for shopping with us!</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ 
+<script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!user || !user.email) {
+    alert("⚠️ You must login before proceeding to your cart.");
+    localStorage.setItem("redirectAfterLogin", "cart.html");
+    window.location.href = "login.html";
+  }
+</script>
+
+
+<!-- ✅ Checkout Logic -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!user) {
+    alert("Please login before checking out.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  document.getElementById("email").value = user.email || "";
+
+  document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    const fullName = document.getElementById("fullName").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const address = document.getElementById("address").value;
+    const notes = document.getElementById("notes").value;
+
+    const orderData = {
+      items: cart,
+      fullName,
+      email,
+      phone,
+      address,
+      notes
+    };
+
+    try {
+      // Attach JWT token if available
+      const session = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+      const headers = { 'Content-Type': 'application/json' };
+      if (session && session.token) headers['Authorization'] = `Bearer ${session.token}`;
+
+      const res = await fetch("http://localhost:3000/api/orders", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(orderData)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // ✅ Save confirmation data for order.html
+        const confirmationSummary = {
+          items: cart,
+          customer: {
+            name: fullName,
+            email,
+            phone,
+            address
+          }
+        };
+
+        localStorage.setItem("order", JSON.stringify(confirmationSummary));
+        localStorage.removeItem("cart");
+
+        alert("Order placed successfully!");
+        window.location.href = "order.html";
+      } else {
+        alert(data.message || "Failed to place order");
+      }
+    } catch (err) {
+      console.error("Order error:", err);
+      alert("Something went wrong while placing your order.");
+    }
+  });
+});
+</script>
+
+
+</body>
+</html>
